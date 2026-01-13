@@ -7,6 +7,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.database import get_async_db
 from app.services.file_service import FileService
 from app.services.openrouter_service import OpenRouterService
+# Add this import in app/api/endpoints/files.py
+from app.services.csv_parser import CSVParser
 from app.schemas.file_schema import (
     FileResponse, FileListResponse, UploadResponse,
     PaginatedResponse, PaginationParams
@@ -25,10 +27,21 @@ async def upload_file(
     db: AsyncSession = Depends(get_async_db)
 ):
     """Upload and process a CSV/Excel file"""
+
+    print("DEBUG: Starting upload")
     
+    if not file.filename.lower().endswith('.csv'):
+        raise HTTPException(
+            status_code=400,
+            detail="Only CSV files are allowed"
+        )
+
     # Validate file type
     allowed_extensions = settings.ALLOWED_FILE_TYPES
-    file_ext = os.path.splitext(file.filename)[1].lower()
+    file_ext = os.path.splitext(file.filename)[1].lower().lstrip(".")
+
+    print(f"File extension: {file_ext}")
+    print(f"Allowed extensions: {allowed_extensions}")
     
     if file_ext not in allowed_extensions:
         raise HTTPException(
@@ -47,17 +60,23 @@ async def upload_file(
     
     # Reset file pointer
     await file.seek(0)
+
+    data, columns = await CSVParser.parse_csv_content(content, file.filename)
     
     try:
         # Process and save file
         file_record = await file_service.process_and_save_file(db, file)
-        
+        print(f"DEBUG: File processed successfully")  # ← ADD THIS
+
         return UploadResponse(
             message="File uploaded successfully",
             file=FileResponse.from_orm(file_record)
         )
         
     except Exception as e:
+        print(f"DEBUG: ERROR in upload endpoint: {e}")  # ← ADD THIS
+        import traceback
+        traceback.print_exc()  # ← ADD THIS
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.get("/", response_model=FileListResponse)

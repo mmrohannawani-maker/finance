@@ -1,0 +1,10 @@
+Date,Company,Industry,Revenue,Expenses,Profit,Region,Employees,StockPrice
+2024-01-01,Alpha Corp,Technology,120000,80000,40000,North America,350,145.5
+2024-01-01,Beta Ltd,Finance,95000,62000,33000,Europe,220,89.3
+2024-01-01,Gamma Inc,Healthcare,78000,51000,27000,Asia,180,76.4
+2024-02-01,Alpha Corp,Technology,130000,85000,45000,North America,360,148.2
+2024-02-01,Beta Ltd,Finance,98000,64000,34000,Europe,225,92.1
+2024-02-01,Gamma Inc,Healthcare,80000,52000,28000,Asia,185,79.0
+2024-03-01,Alpha Corp,Technology,140000,90000,50000,North America,370,152.8
+2024-03-01,Beta Ltd,Finance,102000,66000,36000,Europe,230,95.6
+2024-03-01,Gamma Inc,Healthcare,82000,54000,28000,Asia,190,81.2

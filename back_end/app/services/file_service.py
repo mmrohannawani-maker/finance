@@ -8,6 +8,7 @@ from sqlalchemy import select, func, delete
 from app.models.file_model import File, FileData
 from app.schemas.file_schema import FileCreate, FileDataCreate
 from app.services.csv_parser import CSVParser
+##from app.models import File, FileData  # ← Correct import
 
 class FileService:
     def __init__(self, upload_dir: str):
@@ -38,6 +39,8 @@ class FileService:
         
         # 1. Save file to disk
         file_path, filename = await self.save_uploaded_file(file)
+
+        
         
         # 2. Parse file content
         data, columns = await CSVParser.parse_file(file)
