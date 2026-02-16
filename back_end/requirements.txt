@@ -36,3 +36,9 @@ pytest
 pytest-asyncio
 black
 flake8
+
+reportlab
+
+pandas
+
+httpx
